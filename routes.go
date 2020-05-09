@@ -51,7 +51,8 @@ func (s *service) routes() {
 
 func (s *service) requestLogger(h http.HandlerFunc) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
-		LOGGER.Info().Msgf("[r] src: %s - %s", r.RemoteAddr, r.URL.Path)
+		r.ParseForm()
+		LOGGER.Info().Msgf("[r] src: %s - %s [%s]", r.RemoteAddr, r.URL.Path, r.Form)
 		h(w, r)
 	}
 }

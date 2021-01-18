@@ -1,9 +1,7 @@
 package stringen
 
 import (
-	"crypto/sha256"
 	"encoding/base64"
-	"encoding/hex"
 	"encoding/json"
 	"math/rand"
 	"net/http"
@@ -74,7 +72,7 @@ func (s *service) randomCharsService() http.HandlerFunc {
 				charType = CharTypeAlphaNumericSpecial
 			}
 
-			str := genRandomCharacters(numChars, CharType(charType))
+			str := GenRandomCharacters(numChars, CharType(charType))
 
 			if isRaw(r) {
 				w.Write([]byte(str))
@@ -172,13 +170,18 @@ func (s *service) uuidService() http.HandlerFunc {
 func (s *service) sha256HashService() http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		switch r.Method {
+		case "GET":
+			randChars := GenRandomCharacters(20, CharTypeAlphaNumericSpecial)
+			hashStr := GenSha256Hash(randChars)
+			if isRaw(r) {
+				w.Write([]byte(hashStr))
+				return
+			}
+			successResponse(w, hashStr)
 		case "POST":
 			r.ParseForm()
 			input := r.Form.Get(InputDataField)
-			hasher := sha256.New()
-			hasher.Write([]byte(input))
-			hash := hasher.Sum(nil)
-			hashStr := hex.EncodeToString(hash)
+			hashStr := GenSha256Hash(input)
 			if isRaw(r) {
 				w.Write([]byte(hashStr))
 				return

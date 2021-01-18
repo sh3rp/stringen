@@ -1,8 +1,11 @@
 package stringen
 
 import (
+	"crypto/sha256"
+	"encoding/hex"
 	"fmt"
 	"math/rand"
+	"time"
 )
 
 var AlphaChars = []string{"a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k",
@@ -24,8 +27,9 @@ func (ct CharType) String() string {
 	return [...]string{"alpha", "alphanum", "all"}[ct]
 }
 
-func genRandomCharacters(numChars int, charType CharType) string {
+func GenRandomCharacters(numChars int, charType CharType) string {
 	var randomStr string
+	rand.Seed(time.Now().UnixNano())
 	for i := 0; i < numChars; i++ {
 		switch charType {
 		case CharTypeAlpha:
@@ -57,4 +61,12 @@ func genRandomCharacters(numChars int, charType CharType) string {
 		}
 	}
 	return randomStr
+}
+
+func GenSha256Hash(str string) string {
+	hasher := sha256.New()
+	hasher.Write([]byte(str))
+	hash := hasher.Sum(nil)
+	hashStr := hex.EncodeToString(hash)
+	return hashStr
 }

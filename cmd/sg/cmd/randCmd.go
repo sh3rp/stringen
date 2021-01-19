@@ -7,11 +7,28 @@ import (
 	"github.com/spf13/cobra"
 )
 
+var length int
+var strType string
+
 var randCmd = &cobra.Command{
 	Use:   "rand",
 	Short: "Generate a random string",
 	Run: func(cmd *cobra.Command, args []string) {
-		str := stringen.GenRandomCharacters(20, stringen.CharTypeAlphaNumericSpecial)
+		var t int
+		switch strType {
+		case "a":
+			t = stringen.CharTypeAlpha
+		case "an":
+			t = stringen.CharTypeAlphaNumeric
+		case "ans":
+			t = stringen.CharTypeAlphaNumericSpecial
+		}
+		str := stringen.GenRandomCharacters(length, stringen.CharType(t))
 		fmt.Println(str)
 	},
+}
+
+func init() {
+	randCmd.Flags().IntVarP(&length, "length", "l", 20, "Number of characters to generate")
+	randCmd.Flags().StringVarP(&strType, "type", "t", "ans", "Type of characters to use (a: alpha, an: alphanumeric, ans: alphanumeric and symbols)")
 }

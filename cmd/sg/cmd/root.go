@@ -7,12 +7,14 @@ import (
 	"github.com/spf13/cobra"
 )
 
+var count int
+
 var rootCmd = &cobra.Command{
 	Use:   "sg",
-	Short: "String generator",
-	Long:  "Generate all manner of strangs",
+	Short: "String Generator",
+	Long:  "Generates a variety of strings",
 	Run: func(cmd *cobra.Command, args []string) {
-
+		cmd.Help()
 	},
 }
 
@@ -27,4 +29,7 @@ func init() {
 	rootCmd.AddCommand(sha256Cmd)
 	rootCmd.AddCommand(uuidCmd)
 	rootCmd.AddCommand(randCmd)
+	rootCmd.AddCommand(encodeBase64Cmd)
+	rootCmd.AddCommand(decodeBase64Cmd)
+	rootCmd.AddCommand(ulidCmd)
 }

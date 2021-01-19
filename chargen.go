@@ -6,6 +6,8 @@ import (
 	"fmt"
 	"math/rand"
 	"time"
+
+	"github.com/oklog/ulid"
 )
 
 var AlphaChars = []string{"a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k",
@@ -69,4 +71,11 @@ func GenSha256Hash(str string) string {
 	hash := hasher.Sum(nil)
 	hashStr := hex.EncodeToString(hash)
 	return hashStr
+}
+
+func GenUlid() string {
+	t := time.Now()
+	entropy := ulid.Monotonic(rand.New(rand.NewSource(t.UnixNano())), 0)
+	ulid := ulid.MustNew(ulid.Timestamp(t), entropy)
+	return ulid.String()
 }

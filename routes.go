@@ -3,14 +3,11 @@ package stringen
 import (
 	"encoding/base64"
 	"encoding/json"
-	"math/rand"
 	"net/http"
 	"strconv"
 	"strings"
-	"time"
 
 	"github.com/google/uuid"
-	"github.com/oklog/ulid"
 )
 
 var InputDataField = "input"
@@ -128,10 +125,7 @@ func (s *service) ulidService() http.HandlerFunc {
 			}
 			var ids []string
 			for i := 0; i < count; i++ {
-				t := time.Now()
-				entropy := ulid.Monotonic(rand.New(rand.NewSource(t.UnixNano())), 0)
-				ulid := ulid.MustNew(ulid.Timestamp(t), entropy)
-				ids = append(ids, strings.ToLower(ulid.String()))
+				ids = append(ids, strings.ToLower(GenUlid()))
 			}
 			str := strings.Join(ids, ",")
 			if isRaw(r) {

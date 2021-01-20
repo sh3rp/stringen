@@ -8,6 +8,7 @@ import (
 )
 
 var count int
+var useStdin bool
 
 var rootCmd = &cobra.Command{
 	Use:   "sg",
@@ -32,4 +33,6 @@ func init() {
 	rootCmd.AddCommand(encodeBase64Cmd)
 	rootCmd.AddCommand(decodeBase64Cmd)
 	rootCmd.AddCommand(ulidCmd)
+	rootCmd.AddCommand(ejwtCmd)
+	rootCmd.AddCommand(djwtCmd)
 }

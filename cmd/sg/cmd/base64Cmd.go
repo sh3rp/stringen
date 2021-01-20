@@ -11,14 +11,13 @@ import (
 )
 
 var stringToEncode string
-var encodeFromStdin bool
 
 var encodeBase64Cmd = &cobra.Command{
 	Use:   "e64",
 	Short: "Encode to a base64 string based on a passed parameter or stdin",
 	Run: func(cmd *cobra.Command, args []string) {
 		var str string
-		if encodeFromStdin {
+		if useStdin {
 			str = stringen.EncodeBase64(bufio.NewReader(os.Stdin))
 		} else {
 			str = stringen.EncodeBase64(bufio.NewReader(bytes.NewBufferString(stringToEncode)))
@@ -32,7 +31,7 @@ var decodeBase64Cmd = &cobra.Command{
 	Short: "Decode to a base64 string based on a passed parameter or stdin",
 	Run: func(cmd *cobra.Command, args []string) {
 		var str string
-		if encodeFromStdin {
+		if useStdin {
 			str = stringen.DecodeBase64(bufio.NewReader(os.Stdin))
 		} else {
 			str = stringen.DecodeBase64(bufio.NewReader(bytes.NewBufferString(stringToEncode)))
@@ -43,7 +42,7 @@ var decodeBase64Cmd = &cobra.Command{
 
 func init() {
 	encodeBase64Cmd.Flags().StringVarP(&stringToEncode, "string", "s", "", "Number of characters to generate")
-	encodeBase64Cmd.Flags().BoolVarP(&encodeFromStdin, "in", "i", false, "Encode from stdin")
+	encodeBase64Cmd.Flags().BoolVarP(&useStdin, "in", "i", false, "Encode from stdin")
 	decodeBase64Cmd.Flags().StringVarP(&stringToEncode, "string", "s", "", "Number of characters to generate")
-	decodeBase64Cmd.Flags().BoolVarP(&encodeFromStdin, "in", "i", false, "Encode from stdin")
+	decodeBase64Cmd.Flags().BoolVarP(&useStdin, "in", "i", false, "Encode from stdin")
 }

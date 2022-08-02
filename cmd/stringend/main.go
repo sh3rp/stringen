@@ -12,8 +12,9 @@ import (
 var port int
 
 func main() {
-	log2.LOGGER.Info().Msgf("StrinGen v1.0")
+	log2.LOGGER.Info().Msgf("StrinGen v1.1")
 	flag.IntVar(&port, "p", 8888, "Port to run on")
+	flag.Parse()
 	svc := server.NewService(http.NewServeMux())
 	log.Fatal(svc.Serve(fmt.Sprintf(":%d", port)))
 }

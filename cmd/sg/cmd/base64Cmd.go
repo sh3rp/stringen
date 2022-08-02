@@ -4,9 +4,9 @@ import (
 	"bufio"
 	"bytes"
 	"fmt"
+	"github.com/sh3rp/stringen/pkg/codec"
 	"os"
 
-	"github.com/sh3rp/stringen"
 	"github.com/spf13/cobra"
 )
 
@@ -18,9 +18,9 @@ var encodeBase64Cmd = &cobra.Command{
 	Run: func(cmd *cobra.Command, args []string) {
 		var str string
 		if useStdin {
-			str = stringen.EncodeBase64(bufio.NewReader(os.Stdin))
+			str = codec.EncodeBase64(bufio.NewReader(os.Stdin))
 		} else {
-			str = stringen.EncodeBase64(bufio.NewReader(bytes.NewBufferString(stringToEncode)))
+			str = codec.EncodeBase64(bufio.NewReader(bytes.NewBufferString(stringToEncode)))
 		}
 		fmt.Println(str)
 	},
@@ -32,9 +32,9 @@ var decodeBase64Cmd = &cobra.Command{
 	Run: func(cmd *cobra.Command, args []string) {
 		var str string
 		if useStdin {
-			str = stringen.DecodeBase64(bufio.NewReader(os.Stdin))
+			str = codec.DecodeBase64(bufio.NewReader(os.Stdin))
 		} else {
-			str = stringen.DecodeBase64(bufio.NewReader(bytes.NewBufferString(stringToEncode)))
+			str = codec.DecodeBase64(bufio.NewReader(bytes.NewBufferString(stringToEncode)))
 		}
 		fmt.Println(str)
 	},

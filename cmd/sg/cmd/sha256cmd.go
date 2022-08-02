@@ -4,11 +4,11 @@ import (
 	"bufio"
 	"encoding/base64"
 	"fmt"
+	"github.com/sh3rp/stringen/pkg/codec"
 	"io"
 	"log"
 	"os"
 
-	"github.com/sh3rp/stringen"
 	"github.com/spf13/cobra"
 )
 
@@ -37,12 +37,12 @@ var sha256Cmd = &cobra.Command{
 					log.Fatal(err)
 				}
 			}
-			hash := stringen.GenSha256Hash(data)
+			hash := codec.GenSha256Hash(data)
 			fmt.Println(hash)
 		} else {
 			for i := 0; i < count; i++ {
-				material := stringen.GenRandomCharacters(20, stringen.CharTypeAlphaNumericSpecial)
-				hash := stringen.GenSha256Hash(material)
+				material := codec.GenRandomCharacters(20, codec.CharTypeAlphaNumericSpecial)
+				hash := codec.GenSha256Hash(material)
 				fmt.Println(hash)
 			}
 		}

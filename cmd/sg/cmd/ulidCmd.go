@@ -2,9 +2,9 @@ package cmd
 
 import (
 	"fmt"
+	"github.com/sh3rp/stringen/pkg/codec"
 	"strings"
 
-	"github.com/sh3rp/stringen"
 	"github.com/spf13/cobra"
 )
 
@@ -15,7 +15,7 @@ var ulidCmd = &cobra.Command{
 	Short: "Generate a random ULID string",
 	Run: func(cmd *cobra.Command, args []string) {
 		for i := 0; i < count; i++ {
-			str := stringen.GenUlid()
+			str := codec.GenUlid()
 			if toLower {
 				str = strings.ToLower(str)
 			}

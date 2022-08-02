@@ -4,12 +4,12 @@ import (
 	"bufio"
 	"encoding/base64"
 	"fmt"
+	"github.com/sh3rp/stringen/pkg/codec"
 	"io"
 	"log"
 	"os"
 	"strings"
 
-	"github.com/sh3rp/stringen"
 	"github.com/spf13/cobra"
 )
 
@@ -32,7 +32,7 @@ var ejwtCmd = &cobra.Command{
 			}
 		}
 
-		token := stringen.GenerateJWTToken(secret, claims)
+		token := codec.GenerateJWTToken(secret, claims)
 
 		fmt.Printf("%s", token)
 	},
@@ -63,14 +63,14 @@ var djwtCmd = &cobra.Command{
 					log.Fatal(err)
 				}
 			}
-			data, err := stringen.DecodeJWTToken(secret, tokenStr)
+			data, err := codec.DecodeJWTToken(secret, tokenStr)
 			if err != nil {
 				fmt.Printf("Error decoding token: %+v\n", err)
 			} else {
 				fmt.Println(data)
 			}
 		} else {
-			data, err := stringen.DecodeJWTToken(secret, tokenStr)
+			data, err := codec.DecodeJWTToken(secret, tokenStr)
 			if err != nil {
 				fmt.Printf("Error decoding token: %+v\n", err)
 			} else {

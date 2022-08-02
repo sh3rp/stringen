@@ -1,4 +1,4 @@
-package stringen
+package log
 
 import (
 	"os"

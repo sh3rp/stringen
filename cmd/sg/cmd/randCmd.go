@@ -2,8 +2,8 @@ package cmd
 
 import (
 	"fmt"
+	"github.com/sh3rp/stringen/pkg/codec"
 
-	"github.com/sh3rp/stringen"
 	"github.com/spf13/cobra"
 )
 
@@ -17,13 +17,13 @@ var randCmd = &cobra.Command{
 		var t int
 		switch strType {
 		case "a":
-			t = stringen.CharTypeAlpha
+			t = codec.CharTypeAlpha
 		case "an":
-			t = stringen.CharTypeAlphaNumeric
+			t = codec.CharTypeAlphaNumeric
 		case "ans":
-			t = stringen.CharTypeAlphaNumericSpecial
+			t = codec.CharTypeAlphaNumericSpecial
 		}
-		str := stringen.GenRandomCharacters(length, stringen.CharType(t))
+		str := codec.GenRandomCharacters(length, codec.CharType(t))
 		fmt.Println(str)
 	},
 }

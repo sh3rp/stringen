@@ -1,8 +1,10 @@
-package stringen
+package server
 
 import (
 	"encoding/base64"
 	"encoding/json"
+	"github.com/sh3rp/stringen/pkg/codec"
+	"github.com/sh3rp/stringen/pkg/log"
 	"net/http"
 	"strconv"
 	"strings"
@@ -29,9 +31,9 @@ func NewService(mux *http.ServeMux) Service {
 }
 
 func (s *service) Serve(port string) error {
-	LOGGER.Info().Msgf("Compiling routes...")
+	log.LOGGER.Info().Msgf("Compiling routes...")
 	s.routes()
-	LOGGER.Info().Msgf("Starting server on %s", port)
+	log.LOGGER.Info().Msgf("Starting server on %s", port)
 	return http.ListenAndServe(port, s.router)
 }
 
@@ -47,7 +49,7 @@ func (s *service) routes() {
 func (s *service) requestLogger(h http.HandlerFunc) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		r.ParseForm()
-		LOGGER.Info().Msgf("[r] src: %s - %s [%s]", r.RemoteAddr, r.URL.Path, r.Form)
+		log.LOGGER.Info().Msgf("[r] src: %s - %s (%s) [%s]", r.RemoteAddr, r.URL.Path, r.Method, r.Form)
 		h(w, r)
 	}
 }
@@ -66,10 +68,10 @@ func (s *service) randomCharsService() http.HandlerFunc {
 			if r.URL.Query().Get(CharTypeDataField) != "" {
 				charType, _ = strconv.Atoi(r.URL.Query().Get(CharTypeDataField))
 			} else {
-				charType = CharTypeAlphaNumericSpecial
+				charType = codec.CharTypeAlphaNumericSpecial
 			}
 
-			str := GenRandomCharacters(numChars, CharType(charType))
+			str := codec.GenRandomCharacters(numChars, codec.CharType(charType))
 
 			if isRaw(r) {
 				w.Write([]byte(str))
@@ -125,7 +127,7 @@ func (s *service) ulidService() http.HandlerFunc {
 			}
 			var ids []string
 			for i := 0; i < count; i++ {
-				ids = append(ids, strings.ToLower(GenUlid()))
+				ids = append(ids, strings.ToLower(codec.GenUlid()))
 			}
 			str := strings.Join(ids, ",")
 			if isRaw(r) {
@@ -165,8 +167,8 @@ func (s *service) sha256HashService() http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		switch r.Method {
 		case "GET":
-			randChars := GenRandomCharacters(20, CharTypeAlphaNumericSpecial)
-			hashStr := GenSha256Hash(randChars)
+			randChars := codec.GenRandomCharacters(20, codec.CharTypeAlphaNumericSpecial)
+			hashStr := codec.GenSha256Hash(randChars)
 			if isRaw(r) {
 				w.Write([]byte(hashStr))
 				return
@@ -175,7 +177,7 @@ func (s *service) sha256HashService() http.HandlerFunc {
 		case "POST":
 			r.ParseForm()
 			input := r.Form.Get(InputDataField)
-			hashStr := GenSha256Hash(input)
+			hashStr := codec.GenSha256Hash(input)
 			if isRaw(r) {
 				w.Write([]byte(hashStr))
 				return

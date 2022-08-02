@@ -1,4 +1,4 @@
-package stringen
+package codec
 
 import (
 	"encoding/json"

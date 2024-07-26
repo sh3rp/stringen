@@ -6,11 +6,11 @@ clean:
 
 build:
 	go mod tidy
-	go build -o target/bin/sg cmd/sg/main.go
+	go build -o target/bin/stringen cmd/sg/main.go
 	go build -o target/bin/stringend cmd/stringend/main.go
 
 install: build
-	sudo cp target/bin/sg /usr/local/bin
-	sudo cp target/bin/stringend /usr/local/bin
+	cp target/bin/stringen $(HOME)/bin
+	cp target/bin/stringend $(HOME)/bin
 
 PHONY: .all .build .install

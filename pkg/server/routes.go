@@ -202,6 +202,9 @@ func writeResponse(w http.ResponseWriter, code int, message string, data interfa
 		w.WriteHeader(500)
 		return
 	}
+	
+	w.Header().Add("Content-Type","application/json")
+	w.WriteHeader(http.StatusOK)
 
 	w.Write(bytes)
 }
